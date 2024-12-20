@@ -1,13 +1,10 @@
-import { useState, useEffect, useRef } from 'react';
-import axios from 'axios';
+import { useState } from 'react';
 import CreateGame from './components/CreateGame';
 import JoinGame from './components/JoinGame';
-import { WebSocket } from 'socket.io-client';
-import useWebSocket from 'react-use-websocket';
 import GameState from './components/GameState';
 
 const App = () => {
-  const [gameState, setGameState] = useState({});
+  const [gameState, setGameState] = useState(null);
   const [gameId, setGameId] = useState('');
   const [playerName, setPlayerName] = useState('');
 

@@ -1,15 +1,17 @@
 import { useEffect } from 'react';
 import useWebSocket from 'react-use-websocket';
+import { GameState } from '../types';
+import Player from './Player';
 
 interface Props {
   gameId: string;
   playerName: string;
   setGameState: Function;
-  gameState: any;
+  gameState: GameState | null;
 }
 
 const GameState = ({ gameId, playerName, setGameState, gameState }: Props) => {
-  const { sendMessage, lastJsonMessage, readyState } = useWebSocket(
+  const { lastJsonMessage } = useWebSocket(
     `http://[::1]:5000/${gameId}/${playerName}`,
     { onOpen: () => setGameState(lastJsonMessage) }
   );
@@ -18,7 +20,38 @@ const GameState = ({ gameId, playerName, setGameState, gameState }: Props) => {
     setGameState(lastJsonMessage);
   }, [lastJsonMessage]);
 
-  return <>{JSON.stringify(gameState)}</>;
+  if (gameState == null) {
+    return <></>;
+  }
+
+  const {
+    gameStatus,
+    currentRoundIndex,
+    maxRoundIndex,
+    players,
+    playerOrder,
+    clues,
+    votes,
+  } = gameState;
+
+  return (
+    <>
+      <h3>GameId: {gameId}</h3>
+      <h3>status: {gameStatus}</h3>
+      <div>
+        Round {currentRoundIndex + 1} / {maxRoundIndex + 1}
+      </div>
+      {playerOrder.map((player) => {
+        return (
+          <Player
+            player={players[player]}
+            clues={clues.map((clue) => clue[player])}
+            votes={votes.map((vote) => vote[player])}
+          />
+        );
+      })}
+    </>
+  );
 };
 
 export default GameState;

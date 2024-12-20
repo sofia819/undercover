@@ -23,11 +23,10 @@ const JoinGame = ({ setPlayerName, setGameId, playerName, gameId }: Props) => {
   const joinGame = () => {
     axios
       .post(`http://[::1]:5000/${gameIdInput}/${playerNameInput}`)
-      .then(() => {
-        setGameId(gameIdInput);
-        setPlayerName(playerNameInput);
-      })
       .catch((err) => console.error(err));
+
+    setGameId(gameIdInput);
+    setPlayerName(playerNameInput);
   };
 
   return (
