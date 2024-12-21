@@ -31,26 +31,22 @@ const JoinGame = ({ setPlayerName, setGameId, playerName, gameId }: Props) => {
 
   return (
     <>
-      {gameId === '' || playerName === '' ? (
-        <>
-          <input
-            onChange={(e) => setGameIdInput(e.target.value)}
-            defaultValue={gameId}
-          />
-          <input
-            onChange={(e) => setPlayerNameInput(e.target.value)}
-            defaultValue={playerName}
-          />
-          <button
-            onClick={joinGame}
-            disabled={gameIdInput === '' || playerNameInput === ''}
-          >
-            Join game
-          </button>
-        </>
-      ) : (
-        <h3>Hello, {playerName}</h3>
-      )}
+      <div>
+        <input
+          onChange={(e) => setGameIdInput(e.target.value)}
+          defaultValue={gameId}
+        />
+        <input
+          onChange={(e) => setPlayerNameInput(e.target.value)}
+          defaultValue={playerName}
+        />
+        <button
+          onClick={joinGame}
+          disabled={gameIdInput === '' || playerNameInput === ''}
+        >
+          Join game
+        </button>
+      </div>
     </>
   );
 };

@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import useWebSocket from 'react-use-websocket';
-import { GameState } from '../types';
-import Player from './Player';
+import { GameState, Status } from '../types';
+import Result from './Result';
 
 interface Props {
   gameId: string;
@@ -20,7 +20,7 @@ const GameState = ({ gameId, playerName, setGameState, gameState }: Props) => {
     setGameState(lastJsonMessage);
   }, [lastJsonMessage]);
 
-  if (gameState == null) {
+  if (gameState == null || gameState?.gameStatus === Status.WAITING) {
     return <></>;
   }
 
@@ -43,10 +43,10 @@ const GameState = ({ gameId, playerName, setGameState, gameState }: Props) => {
       </div>
       {playerOrder.map((player) => {
         return (
-          <Player
+          <Result
             player={players[player]}
-            clues={clues.map((clue) => clue[player])}
-            votes={votes.map((vote) => vote[player])}
+            clues={clues.map((clue) => clue[player]) || []}
+            votes={votes.map((vote) => vote[player]) || []}
           />
         );
       })}

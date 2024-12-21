@@ -14,13 +14,7 @@ const CreateGame = ({ setGameId, gameId }: Props) => {
   };
 
   return (
-    <>
-      {gameId === '' ? (
-        <button onClick={createGame}>Create Game</button>
-      ) : (
-        <h3>Created gameId {gameId}</h3>
-      )}
-    </>
+    <>{gameId === '' && <button onClick={createGame}>Create Game</button>}</>
   );
 };
 
