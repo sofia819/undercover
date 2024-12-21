@@ -1,20 +1,24 @@
-import axios from 'axios';
+import { createGame } from '../Request';
 
 interface Props {
   setGameId: Function;
   gameId: string;
+  playerNameInput: string;
 }
 
-const CreateGame = ({ setGameId, gameId }: Props) => {
-  const createGame = () => {
-    axios
-      .post(`http://[::1]:5000/create`)
-      .then(({ data }) => setGameId(data))
-      .catch((err) => console.error(err));
+const CreateGame = ({ setGameId, gameId, playerNameInput }: Props) => {
+  const handleCreateGame = () => {
+    setGameId(createGame(playerNameInput));
   };
 
   return (
-    <>{gameId === '' && <button onClick={createGame}>Create Game</button>}</>
+    <>
+      {gameId === '' && (
+        <button onClick={handleCreateGame} disabled={playerNameInput === ''}>
+          Create Game
+        </button>
+      )}
+    </>
   );
 };
 

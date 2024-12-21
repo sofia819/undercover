@@ -1,20 +1,21 @@
-import axios from 'axios';
 import { useEffect, useState } from 'react';
+import { createGame, joinGame } from '../Request';
+import { GameStatus } from '../types';
 
 interface Props {
   setPlayerName: Function;
   setGameId: Function;
-  setGameState: Function;
   playerName: string;
   gameId: string;
+  setGameStatus: Function;
 }
 
 const JoinGame = ({
   setPlayerName,
   setGameId,
-  setGameState,
   playerName,
   gameId,
+  setGameStatus,
 }: Props) => {
   const [gameIdInput, setGameIdInput] = useState('');
   const [playerNameInput, setPlayerNameInput] = useState('');
@@ -27,38 +28,51 @@ const JoinGame = ({
     setPlayerNameInput(playerName);
   }, [playerName]);
 
-  const joinGame = () => {
-    axios
-      .post(`http://[::1]:5000/${gameIdInput}/${playerNameInput}`)
-      .catch((err) => console.error(err));
+  const handleClick = async () => {
+    if (gameId === '' && gameIdInput === '') {
+      const createdGameId = await createGame(playerNameInput).then(
+        (response) => response.data
+      );
+      setGameId(createdGameId);
+      setPlayerName(playerNameInput);
+      setGameStatus(GameStatus.WAITING);
+      return;
+    }
 
-    setGameId(gameIdInput);
-    setPlayerName(playerNameInput);
-
-    axios
-      .get(`http://[::1]:5000/${gameIdInput}`)
-      .then(({ data }) => setGameState(data))
-      .catch((err) => console.error(err));
+    joinGame(gameIdInput, playerNameInput)
+      .then(() => {
+        setPlayerName(playerNameInput);
+        setGameStatus(GameStatus.WAITING);
+      })
+      .catch(
+        ({
+          response: {
+            data: { type },
+          },
+        }) => {
+          console.log(type);
+          setGameIdInput('');
+        }
+      );
   };
 
   return (
     <>
-      <div>
-        <input
-          onChange={(e) => setGameIdInput(e.target.value)}
-          defaultValue={gameId}
-        />
-        <input
-          onChange={(e) => setPlayerNameInput(e.target.value)}
-          defaultValue={playerName}
-        />
-        <button
-          onClick={joinGame}
-          disabled={gameIdInput === '' || playerNameInput === ''}
-        >
-          Join game
-        </button>
-      </div>
+      {(gameId === '' || playerName === '') && (
+        <div>
+          <input
+            onChange={(e) => setGameIdInput(e.target.value)}
+            value={gameIdInput}
+          />
+          <input
+            onChange={(e) => setPlayerNameInput(e.target.value)}
+            value={playerNameInput}
+          />
+          <button onClick={handleClick} disabled={playerNameInput === ''}>
+            Join or create game
+          </button>
+        </div>
+      )}
     </>
   );
 };

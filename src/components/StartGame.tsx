@@ -1,22 +1,24 @@
-import axios from 'axios';
+import { startGame } from '../Request';
+import { GameStatus } from '../types';
 
 interface Props {
-  setGameState: Function;
   gameId: string;
+  setGameStatus: Function;
 }
 
-const StartGame = ({ gameId, setGameState }: Props) => {
+const StartGame = ({ gameId, setGameStatus }: Props) => {
   const handleStart = () => {
-    axios
-      .post(`http://[::1]:5000/${gameId}/start`)
-      .catch((err) => console.error(err));
+    startGame(gameId);
+    setGameStatus(GameStatus.CLUE);
   };
 
   return (
     <>
-      <div>
-        <button onClick={handleStart}>Start Game</button>
-      </div>
+      {gameId !== '' && (
+        <div>
+          <button onClick={handleStart}>Start Game</button>
+        </div>
+      )}
     </>
   );
 };

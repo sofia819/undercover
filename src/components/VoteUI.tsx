@@ -1,5 +1,5 @@
-import axios from 'axios';
 import { useState } from 'react';
+import { submitVote } from '../Request';
 
 interface Props {
   gameId: string;
@@ -8,22 +8,19 @@ interface Props {
 }
 
 const VoteUI = ({ gameId, playerName, playerList }: Props) => {
-  const [clueInput, setClueInput] = useState('');
-  const handleInput = (inputText: string) => setClueInput(inputText);
+  const [voteInput, setVoteInput] = useState('');
+  const handleInput = (inputText: string) => setVoteInput(inputText);
 
   const handleClick = () => {
-    axios
-      .post(`http://[::1]:5000/${gameId}/${playerName}/vote/${clueInput}`)
-      .catch((err) => console.error(err));
-
-    setClueInput('');
+    submitVote(gameId, playerName, voteInput);
+    setVoteInput('');
   };
 
   return (
     <>
       <div>
         <input
-          value={clueInput}
+          value={voteInput}
           onChange={(e) => handleInput(e.target.value)}
         ></input>
         <button onClick={handleClick}>Submit</button>

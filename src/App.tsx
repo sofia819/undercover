@@ -1,36 +1,30 @@
 import { useState } from 'react';
-import CreateGame from './components/CreateGame';
 import JoinGame from './components/JoinGame';
 import GameState from './components/GameState';
 import PlayerCard from './components/PlayerCard';
 import StartGame from './components/StartGame';
-import { Status } from './types';
+import { GameStatus } from './types';
 
 const App = () => {
   const [gameState, setGameState] = useState<GameState | null>(null);
+  const [gameStatus, setGameStatus] = useState<GameStatus>(GameStatus.NONE);
   const [gameId, setGameId] = useState('');
   const [playerName, setPlayerName] = useState('');
   const [word, setWord] = useState('');
 
   return (
     <>
-      {playerName === '' && (
-        <>
-          <CreateGame setGameId={setGameId} gameId={gameId} />
-          <JoinGame
-            setPlayerName={setPlayerName}
-            setGameId={setGameId}
-            setGameState={setGameState}
-            playerName={playerName}
-            gameId={gameId}
-          />
-        </>
+      <JoinGame
+        setPlayerName={setPlayerName}
+        setGameId={setGameId}
+        playerName={playerName}
+        gameId={gameId}
+        setGameStatus={setGameStatus}
+      />
+      {gameStatus === GameStatus.WAITING && (
+        <StartGame gameId={gameId} setGameStatus={setGameStatus} />
       )}
-      {gameId !== '' &&
-      playerName !== '' &&
-      gameState?.gameStatus === Status.WAITING ? (
-        <StartGame gameId={gameId} setGameState={setGameState} />
-      ) : (
+      {(gameStatus === GameStatus.CLUE || gameStatus === GameStatus.VOTE) && (
         <>
           <PlayerCard
             gameId={gameId}
@@ -38,16 +32,15 @@ const App = () => {
             setWord={setWord}
             word={word}
           />
+          <GameState
+            gameId={gameId}
+            playerName={playerName}
+            setGameState={setGameState}
+            gameState={gameState}
+          />
         </>
       )}
-      {gameState && (
-        <GameState
-          gameId={gameId}
-          playerName={playerName}
-          setGameState={setGameState}
-          gameState={gameState}
-        />
-      )}
+      {gameStatus === GameStatus.COMPLETE && <>Results here</>}
     </>
   );
 };

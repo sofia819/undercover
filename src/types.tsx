@@ -28,10 +28,31 @@ export enum Role {
   SPY = 'SPY',
 }
 
+export enum MessageType {
+  CONNECTED = 'CONNECTED',
+}
+
 export interface Clue {
   [playerName: string]: string;
 }
 
 export interface Vote {
   [votedPlayerName: string]: number;
+}
+
+export enum ErrorType {
+  INVALID_GAME_ID = 'INVALID_GAME_ID',
+  PLAYER_EXISTS = 'PLAYER_EXISTS',
+}
+
+export interface ErrorMessage {
+  type: ErrorType;
+}
+
+export enum GameStatus {
+  NONE,
+  WAITING,
+  CLUE,
+  VOTE,
+  COMPLETE,
 }

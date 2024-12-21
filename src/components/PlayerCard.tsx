@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
-import axios from 'axios';
 import ClueUI from './ClueUI';
 import VoteUI from './VoteUI';
+import { getWord } from '../Request';
 
 interface Props {
   gameId: string;
@@ -16,8 +16,7 @@ const PlayerCard = ({ gameId, playerName, setWord, word }: Props) => {
       return;
     }
 
-    axios
-      .get(`http://[::1]:5000/${gameId}/${playerName}/word`)
+    getWord(gameId, playerName)
       .then(({ data }) => setWord(data))
       .catch((err) => console.error(err));
   }, [playerName]);

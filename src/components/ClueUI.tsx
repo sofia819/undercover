@@ -1,9 +1,9 @@
-import axios from 'axios';
 import { useState } from 'react';
+import { submitClue } from '../Request';
 
-interface Prpos {
+interface Props {
   gameId: string;
-  playerId: string;
+  playerName: string;
 }
 
 const ClueUI = ({ gameId, playerName }: Props) => {
@@ -11,10 +11,7 @@ const ClueUI = ({ gameId, playerName }: Props) => {
   const handleInput = (inputText: string) => setClueInput(inputText);
 
   const handleClick = () => {
-    axios
-      .post(`http://[::1]:5000/${gameId}/${playerName}/clue/${clueInput}`)
-      .catch((err) => console.error(err));
-
+    submitClue(gameId, playerName, clueInput);
     setClueInput('');
   };
 
