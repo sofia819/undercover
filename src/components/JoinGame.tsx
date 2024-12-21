@@ -1,22 +1,14 @@
 import { useEffect, useState } from 'react';
 import { createGame, joinGame } from '../Request';
-import { GameStatus } from '../types';
 
 interface Props {
   setPlayerName: Function;
   setGameId: Function;
   playerName: string;
   gameId: string;
-  setGameStatus: Function;
 }
 
-const JoinGame = ({
-  setPlayerName,
-  setGameId,
-  playerName,
-  gameId,
-  setGameStatus,
-}: Props) => {
+const JoinGame = ({ setPlayerName, setGameId, playerName, gameId }: Props) => {
   const [gameIdInput, setGameIdInput] = useState('');
   const [playerNameInput, setPlayerNameInput] = useState('');
 
@@ -35,7 +27,6 @@ const JoinGame = ({
       );
       setGameId(createdGameId);
       setPlayerName(playerNameInput);
-      setGameStatus(GameStatus.WAITING);
       return;
     }
 
@@ -43,7 +34,6 @@ const JoinGame = ({
       .then(() => {
         setGameId(gameIdInput);
         setPlayerName(playerNameInput);
-        setGameStatus(GameStatus.WAITING);
       })
       .catch(
         ({

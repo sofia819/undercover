@@ -1,4 +1,4 @@
-import { GameState } from '../types';
+import { GameState, Status } from '../types';
 import Result from './Result';
 
 interface Props {
@@ -14,15 +14,18 @@ const Display = ({ gameState }: Props) => {
 
   return (
     <>
-      {playerOrder.map((player) => {
-        return (
-          <Result
-            player={players[player]}
-            clues={clues.map((clue) => clue[player]) || []}
-            votes={Object.values(votes || {}).map((vote) => vote[player]) || []}
-          />
-        );
-      })}
+      {gameState.gameStatus !== Status.COMPLETE &&
+        playerOrder.map((player) => {
+          return (
+            <Result
+              player={players[player]}
+              clues={clues.map((clue) => clue[player]) || []}
+              votes={
+                Object.values(votes || {}).map((vote) => vote[player]) || []
+              }
+            />
+          );
+        })}
     </>
   );
 };

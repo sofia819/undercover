@@ -4,11 +4,11 @@ import GameState from './components/GameState';
 import PlayerCard from './components/PlayerCard';
 import StartGame from './components/StartGame';
 import Display from './components/Display';
-import { GameStatus, Status } from './types';
+import GameResult from './components/GameResult';
+import { Status } from './types';
 
 const App = () => {
   const [gameState, setGameState] = useState<GameState | undefined>(undefined);
-  const [gameStatus, setGameStatus] = useState<GameStatus>(GameStatus.NONE);
   const [gameId, setGameId] = useState('');
   const [playerName, setPlayerName] = useState('');
   const [word, setWord] = useState('');
@@ -20,7 +20,6 @@ const App = () => {
         setGameId={setGameId}
         playerName={playerName}
         gameId={gameId}
-        setGameStatus={setGameStatus}
       />
       <GameState
         gameId={gameId}
@@ -29,7 +28,7 @@ const App = () => {
         gameState={gameState}
       />
       {gameState && gameState.gameStatus === Status.WAITING && (
-        <StartGame gameId={gameId} setGameStatus={setGameStatus} />
+        <StartGame gameId={gameId} />
       )}
       {gameState &&
         (gameState.gameStatus === Status.CLUE ||
@@ -37,7 +36,7 @@ const App = () => {
           <>
             <PlayerCard
               gameId={gameId}
-              playerName={playerName}
+              player={gameState.players[playerName]}
               setWord={setWord}
               word={word}
               currentRoundIndex={gameState.currentRoundIndex}
@@ -49,7 +48,9 @@ const App = () => {
             <Display gameState={gameState} />
           </>
         )}
-      {gameStatus === GameStatus.COMPLETE && <>Results here</>}
+      {gameState && gameState.gameStatus === Status.COMPLETE && (
+        <GameResult players={Object.values(gameState.players)} />
+      )}
     </>
   );
 };
