@@ -6,7 +6,7 @@ import VoteResult from './VoteResult';
 interface Props {
   player: Player;
   clues: string[];
-  votes: number[];
+  votes: string[];
 }
 
 const Result = ({ player, clues, votes }: Props) => (

@@ -41,6 +41,7 @@ const JoinGame = ({
 
     joinGame(gameIdInput, playerNameInput)
       .then(() => {
+        setGameId(gameIdInput);
         setPlayerName(playerNameInput);
         setGameStatus(GameStatus.WAITING);
       })

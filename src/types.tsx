@@ -37,7 +37,7 @@ export interface Clue {
 }
 
 export interface Vote {
-  [votedPlayerName: string]: number;
+  [playerName: string]: string;
 }
 
 export enum ErrorType {

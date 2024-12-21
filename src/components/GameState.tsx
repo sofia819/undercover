@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import { GameState, MessageType } from '../types';
-import Result from './Result';
 import { connectWebsocket } from '../Request';
 import { ReadyState } from 'react-use-websocket';
 
@@ -8,7 +7,7 @@ interface Props {
   gameId: string;
   playerName: string;
   setGameState: Function;
-  gameState: GameState | null;
+  gameState: GameState | undefined;
 }
 
 const GameState = ({ gameId, playerName, setGameState, gameState }: Props) => {
@@ -34,15 +33,7 @@ const GameState = ({ gameId, playerName, setGameState, gameState }: Props) => {
     return <></>;
   }
 
-  const {
-    gameStatus,
-    currentRoundIndex,
-    maxRoundIndex,
-    players,
-    playerOrder,
-    clues,
-    votes,
-  } = gameState;
+  const { gameStatus, currentRoundIndex, maxRoundIndex, players } = gameState;
 
   return (
     <>
@@ -51,16 +42,13 @@ const GameState = ({ gameId, playerName, setGameState, gameState }: Props) => {
       <h3>
         Round {currentRoundIndex + 1} / {maxRoundIndex + 1}
       </h3>
-      <h4>Player: {playerName}</h4>
-      {playerOrder.map((player) => {
-        return (
-          <Result
-            player={players[player]}
-            clues={clues.map((clue) => clue[player]) || []}
-            votes={votes.map((vote) => vote[player]) || []}
-          />
-        );
-      })}
+      <h4>You are {playerName}</h4>
+      <h5>Players:</h5>
+      <div>
+        {Object.keys(players).map((player) => (
+          <p key={player}>{player}</p>
+        ))}
+      </div>
     </>
   );
 };

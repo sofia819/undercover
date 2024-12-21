@@ -2,15 +2,31 @@ import { useEffect } from 'react';
 import ClueUI from './ClueUI';
 import VoteUI from './VoteUI';
 import { getWord } from '../Request';
+import { Clue, Vote, Status } from '../types';
 
 interface Props {
   gameId: string;
   playerName: string;
   setWord: Function;
   word: string;
+  playerOrder: string[];
+  currentRoundIndex: number;
+  clues: Clue[];
+  votes: Vote[];
+  gameStatus: Status;
 }
 
-const PlayerCard = ({ gameId, playerName, setWord, word }: Props) => {
+const PlayerCard = ({
+  gameId,
+  playerName,
+  setWord,
+  word,
+  currentRoundIndex,
+  playerOrder,
+  clues,
+  votes,
+  gameStatus,
+}: Props) => {
   useEffect(() => {
     if (playerName === '') {
       return;
@@ -21,15 +37,23 @@ const PlayerCard = ({ gameId, playerName, setWord, word }: Props) => {
       .catch((err) => console.error(err));
   }, [playerName]);
 
+  const order: number = playerOrder.indexOf(playerName);
+  const current: number = Object.keys(clues[currentRoundIndex] || {}).length;
+
   return (
     <>
-      {gameId !== '' && playerName !== '' && (
+      {currentRoundIndex >= 0 && gameId !== '' && playerName !== '' && (
         <>
-          <h3>GameId: {gameId}</h3>
-          <h4>Player: {playerName}</h4>
           <h4>Word: {word}</h4>
-          <ClueUI gameId={gameId} playerName={playerName} />
-          <VoteUI gameId={gameId} playerName={playerName} playerList={[]} />
+          <h5>Clue</h5>
+          {gameStatus === Status.CLUE && order === current && (
+            <ClueUI gameId={gameId} playerName={playerName} />
+          )}
+          <h5>Vote</h5>
+          {gameStatus === Status.VOTE &&
+            !votes[currentRoundIndex]?.[playerName] && (
+              <VoteUI gameId={gameId} playerName={playerName} playerList={[]} />
+            )}
         </>
       )}
     </>

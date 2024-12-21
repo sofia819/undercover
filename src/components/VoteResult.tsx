@@ -1,5 +1,5 @@
 interface Props {
-  votes: number[];
+  votes: string[];
 }
 
 const VoteResult = ({ votes }: Props) => {
