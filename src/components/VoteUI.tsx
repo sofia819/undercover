@@ -1,29 +1,27 @@
-import { useState } from 'react';
 import { submitVote } from '../Request';
 
 interface Props {
   gameId: string;
   playerName: string;
-  playerList: string[];
+  players: string[];
 }
 
-const VoteUI = ({ gameId, playerName, playerList }: Props) => {
-  const [voteInput, setVoteInput] = useState('');
-  const handleInput = (inputText: string) => setVoteInput(inputText);
-
-  const handleClick = () => {
-    submitVote(gameId, playerName, voteInput);
-    setVoteInput('');
+const VoteUI = ({ gameId, playerName, players }: Props) => {
+  const handleClick = (player: string) => {
+    submitVote(gameId, playerName, player);
   };
 
   return (
     <>
       <div>
-        <input
-          value={voteInput}
-          onChange={(e) => handleInput(e.target.value)}
-        ></input>
-        <button onClick={handleClick}>Submit</button>
+        {players.map(
+          (player) =>
+            player !== playerName && (
+              <button key={player} onClick={() => handleClick(player)}>
+                {player}
+              </button>
+            )
+        )}
       </div>
     </>
   );

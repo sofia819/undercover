@@ -2,9 +2,10 @@ import { startGame } from '../Request';
 
 interface Props {
   gameId: string;
+  hasEnoughPlayers: boolean;
 }
 
-const StartGame = ({ gameId }: Props) => {
+const StartGame = ({ gameId, hasEnoughPlayers }: Props) => {
   const handleStart = () => {
     startGame(gameId);
   };
@@ -13,7 +14,9 @@ const StartGame = ({ gameId }: Props) => {
     <>
       {gameId !== '' && (
         <div>
-          <button onClick={handleStart}>Start Game</button>
+          <button onClick={handleStart} disabled={!hasEnoughPlayers}>
+            Start Game
+          </button>
         </div>
       )}
     </>

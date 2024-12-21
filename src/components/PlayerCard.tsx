@@ -14,6 +14,7 @@ interface Props {
   clues: Clue[];
   votes: Vote[];
   gameStatus: Status;
+  players: string[];
 }
 
 const PlayerCard = ({
@@ -26,6 +27,7 @@ const PlayerCard = ({
   clues,
   votes,
   gameStatus,
+  players,
 }: Props) => {
   useEffect(() => {
     if (playerName === '') {
@@ -48,7 +50,6 @@ const PlayerCard = ({
         (isActive ? (
           <>
             <h4>Word: {word}</h4>
-            <h5>Clue</h5>
             {gameStatus === Status.CLUE && order === current && (
               <ClueUI gameId={gameId} playerName={playerName} />
             )}
@@ -58,7 +59,7 @@ const PlayerCard = ({
                 <VoteUI
                   gameId={gameId}
                   playerName={playerName}
-                  playerList={[]}
+                  players={players}
                 />
               )}
           </>

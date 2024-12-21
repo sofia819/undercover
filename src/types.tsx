@@ -7,7 +7,7 @@ export interface GameState {
   playerOrder: string[];
   clues: Clue[];
   votes: Vote[];
-  winner?: Role;
+  eliminatedPlayers: string[];
 }
 
 export interface Player {
@@ -20,7 +20,8 @@ export enum Status {
   WAITING = 'WAITING',
   CLUE = 'CLUE',
   VOTE = 'VOTE',
-  COMPLETE = 'COMPLETE',
+  CIVILIAN_WON = 'CIVILIAN_WON',
+  SPY_WON = 'SPY_WON',
 }
 
 export enum Role {

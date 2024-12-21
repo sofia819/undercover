@@ -12,13 +12,16 @@ export const joinGame = (gameId: string, playerName: string) => {
 export const startGame = (gameId: string) => {
   return axios.post(`http://[::1]:5000/start`, { gameId });
 };
+export const restartGame = (gameId: string) => {
+  return axios.post(`http://[::1]:5000/restart`, { gameId });
+};
 
 export const getWord = (gameId: string, playerName: string) => {
   return axios.get(`http://[::1]:5000/${gameId}/${playerName}/word`);
 };
 
 export const connectWebsocket = () => {
-  return useWebSocket(`http://[::1]:5000/`);
+  return useWebSocket(`http://[::1]:5000/`, { share: true });
 };
 
 export const submitClue = (

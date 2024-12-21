@@ -21,8 +21,11 @@ const ClueUI = ({ gameId, playerName }: Props) => {
         <input
           value={clueInput}
           onChange={(e) => handleInput(e.target.value)}
+          placeholder='Clue'
         ></input>
-        <button onClick={handleClick}>Submit</button>
+        <button onClick={handleClick} disabled={clueInput.length === 0}>
+          Submit
+        </button>
       </div>
     </>
   );

@@ -1,18 +1,14 @@
-import { Player, Role } from '../types';
+import { Status } from '../types';
 
 interface Props {
-  players: Player[];
+  gameStatus: Status;
 }
 
-const GameResult = ({ players }: Props) => {
+const GameResult = ({ gameStatus }: Props) => {
   return (
     <>
-      {players.filter((player) => player.isActive && player.role === Role.SPY)
-        .length > 0 ? (
-        <h3>Spies won</h3>
-      ) : (
-        <h3>Civilians won</h3>
-      )}
+      {gameStatus === Status.SPY_WON && <h3>Spies won</h3>}
+      {gameStatus === Status.CIVILIAN_WON && <h3>Civilians won</h3>}
     </>
   );
 };

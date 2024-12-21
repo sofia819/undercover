@@ -54,10 +54,12 @@ const JoinGame = ({ setPlayerName, setGameId, playerName, gameId }: Props) => {
           <input
             onChange={(e) => setGameIdInput(e.target.value)}
             value={gameIdInput}
+            placeholder='Game ID'
           />
           <input
             onChange={(e) => setPlayerNameInput(e.target.value)}
             value={playerNameInput}
+            placeholder='Player Name'
           />
           <button onClick={handleClick} disabled={playerNameInput === ''}>
             Join or create game
