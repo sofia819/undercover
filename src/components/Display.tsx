@@ -14,7 +14,8 @@ const Display = ({ gameState }: Props) => {
 
   return (
     <>
-      {gameState.gameStatus !== Status.COMPLETE &&
+      {(gameState.gameStatus === Status.CLUE ||
+        gameState.gameStatus === Status.VOTE) &&
         playerOrder.map((player) => {
           return (
             <Result

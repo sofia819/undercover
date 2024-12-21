@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { GameState, MessageType } from '../types';
+import { GameState, MessageType, Status } from '../types';
 import { connectWebsocket } from '../Request';
 import { ReadyState } from 'react-use-websocket';
 
@@ -40,9 +40,15 @@ const GameState = ({ gameId, playerName, setGameState, gameState }: Props) => {
       <h3>GameId: {gameId}</h3>
       <h3>status: {gameStatus}</h3>
       <h3>
-        Round {currentRoundIndex + 1} / {maxRoundIndex + 1}
+        {`Round ${
+          currentRoundIndex +
+          (gameStatus !== Status.CIVILIAN_WON && gameStatus !== Status.SPY_WON
+            ? 1
+            : 0)
+        }
+        / ${maxRoundIndex + 1}`}
       </h3>
-      <h4>You are {playerName}</h4>
+      <h4>You are player: {playerName}</h4>
     </>
   );
 };
