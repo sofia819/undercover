@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import useWebSocket from 'react-use-websocket';
+import useWebSocket, { ReadyState } from 'react-use-websocket';
 import { GameState, Status } from '../types';
 import Result from './Result';
 
@@ -7,22 +7,23 @@ interface Props {
   gameId: string;
   playerName: string;
   setGameState: Function;
-  gameState: GameState | null;
+  gameState: GameState;
 }
 
 const GameState = ({ gameId, playerName, setGameState, gameState }: Props) => {
-  const { lastJsonMessage } = useWebSocket(
+  const { readyState, lastJsonMessage } = useWebSocket(
     `http://[::1]:5000/${gameId}/${playerName}`,
-    { onOpen: () => setGameState(lastJsonMessage) }
+    {
+      onOpen: () => console.log('connected'),
+    }
   );
 
   useEffect(() => {
-    setGameState(lastJsonMessage);
+    // setGameState(lastJsonMessage);
+    if (readyState === ReadyState.OPEN) {
+      setGameState(lastJsonMessage);
+    }
   }, [lastJsonMessage]);
-
-  if (gameState == null || gameState?.gameStatus === Status.WAITING) {
-    return <></>;
-  }
 
   const {
     gameStatus,

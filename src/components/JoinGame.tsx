@@ -4,11 +4,18 @@ import { useEffect, useState } from 'react';
 interface Props {
   setPlayerName: Function;
   setGameId: Function;
+  setGameState: Function;
   playerName: string;
   gameId: string;
 }
 
-const JoinGame = ({ setPlayerName, setGameId, playerName, gameId }: Props) => {
+const JoinGame = ({
+  setPlayerName,
+  setGameId,
+  setGameState,
+  playerName,
+  gameId,
+}: Props) => {
   const [gameIdInput, setGameIdInput] = useState('');
   const [playerNameInput, setPlayerNameInput] = useState('');
 
@@ -27,6 +34,11 @@ const JoinGame = ({ setPlayerName, setGameId, playerName, gameId }: Props) => {
 
     setGameId(gameIdInput);
     setPlayerName(playerNameInput);
+
+    axios
+      .get(`http://[::1]:5000/${gameIdInput}`)
+      .then(({ data }) => setGameState(data))
+      .catch((err) => console.error(err));
   };
 
   return (

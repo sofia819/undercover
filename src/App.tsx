@@ -14,35 +14,40 @@ const App = () => {
 
   return (
     <>
-      <CreateGame setGameId={setGameId} gameId={gameId} />
-      {gameId === '' ||
-        (playerName === '' && (
+      {playerName === '' && (
+        <>
+          <CreateGame setGameId={setGameId} gameId={gameId} />
           <JoinGame
             setPlayerName={setPlayerName}
             setGameId={setGameId}
+            setGameState={setGameState}
             playerName={playerName}
             gameId={gameId}
           />
-        ))}
+        </>
+      )}
       {gameId !== '' &&
       playerName !== '' &&
-      (gameState?.gameStatus === null ||
-        gameState?.gameStatus === Status.WAITING) ? (
-        <StartGame gameId={gameId} />
+      gameState?.gameStatus === Status.WAITING ? (
+        <StartGame gameId={gameId} setGameState={setGameState} />
       ) : (
-        <PlayerCard
+        <>
+          <PlayerCard
+            gameId={gameId}
+            playerName={playerName}
+            setWord={setWord}
+            word={word}
+          />
+        </>
+      )}
+      {gameState && (
+        <GameState
           gameId={gameId}
           playerName={playerName}
-          setWord={setWord}
-          word={word}
+          setGameState={setGameState}
+          gameState={gameState}
         />
       )}
-      <GameState
-        gameId={gameId}
-        playerName={playerName}
-        setGameState={setGameState}
-        gameState={gameState}
-      />
     </>
   );
 };

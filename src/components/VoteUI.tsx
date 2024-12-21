@@ -23,7 +23,7 @@ const VoteUI = ({ gameId, playerName, playerList }: Props) => {
     <>
       <div>
         <input
-          defaultValue={clueInput}
+          value={clueInput}
           onChange={(e) => handleInput(e.target.value)}
         ></input>
         <button onClick={handleClick}>Submit</button>

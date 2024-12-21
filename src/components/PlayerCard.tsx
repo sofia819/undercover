@@ -12,11 +12,15 @@ interface Props {
 
 const PlayerCard = ({ gameId, playerName, setWord, word }: Props) => {
   useEffect(() => {
+    if (playerName === '') {
+      return;
+    }
+
     axios
       .get(`http://[::1]:5000/${gameId}/${playerName}/word`)
       .then(({ data }) => setWord(data))
       .catch((err) => console.error(err));
-  }, []);
+  }, [playerName]);
 
   return (
     <>
