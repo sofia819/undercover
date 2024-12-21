@@ -1,5 +1,5 @@
-import axios from 'axios';
 import { useEffect, useState } from 'react';
+import { createGame, joinGame } from '../Request';
 
 interface Props {
   setPlayerName: Function;
@@ -20,37 +20,51 @@ const JoinGame = ({ setPlayerName, setGameId, playerName, gameId }: Props) => {
     setPlayerNameInput(playerName);
   }, [playerName]);
 
-  const joinGame = () => {
-    axios
-      .post(`http://[::1]:5000/${gameIdInput}/${playerNameInput}`)
+  const handleClick = async () => {
+    if (gameId === '' && gameIdInput === '') {
+      const createdGameId = await createGame(playerNameInput).then(
+        (response) => response.data
+      );
+      setGameId(createdGameId);
+      setPlayerName(playerNameInput);
+      return;
+    }
+
+    joinGame(gameIdInput, playerNameInput)
       .then(() => {
         setGameId(gameIdInput);
         setPlayerName(playerNameInput);
       })
-      .catch((err) => console.error(err));
+      .catch(
+        ({
+          response: {
+            data: { type },
+          },
+        }) => {
+          console.log(type);
+          setGameIdInput('');
+        }
+      );
   };
 
   return (
     <>
-      {gameId === '' || playerName === '' ? (
-        <>
+      {(gameId === '' || playerName === '') && (
+        <div>
           <input
             onChange={(e) => setGameIdInput(e.target.value)}
-            defaultValue={gameId}
+            value={gameIdInput}
+            placeholder='Game ID'
           />
           <input
             onChange={(e) => setPlayerNameInput(e.target.value)}
-            defaultValue={playerName}
+            value={playerNameInput}
+            placeholder='Player Name'
           />
-          <button
-            onClick={joinGame}
-            disabled={gameIdInput === '' || playerNameInput === ''}
-          >
-            Join game
+          <button onClick={handleClick} disabled={playerNameInput === ''}>
+            Join or create game
           </button>
-        </>
-      ) : (
-        <h3>Hello, {playerName}</h3>
+        </div>
       )}
     </>
   );
