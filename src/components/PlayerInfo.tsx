@@ -18,12 +18,12 @@ const PlayerInfo = ({ gameState }: Props) => {
     <Container>
       {
         <Grid container spacing={1} sx={{ justifyContent: 'center' }}>
-          {Object.values(players || {}).map((player) => {
+          {playerOrder.map((player) => {
             return (
               <InfoCard
-                key={player.playerName}
-                player={player}
-                clues={clues.map((clue) => clue[player.playerName]) || []}
+                key={player}
+                player={players[player]}
+                clues={clues.map((clue) => clue[player]) || []}
               />
             );
           })}
