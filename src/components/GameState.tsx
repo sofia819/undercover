@@ -3,7 +3,6 @@ import { GameState, MessageType, Status } from '../types';
 import { connectWebsocket } from '../Request';
 import { ReadyState } from 'react-use-websocket';
 import StartGame from './StartGame';
-import Container from '@mui/material/Container';
 import GameInfo from './GameInfo';
 import Stack from '@mui/material/Stack';
 import RestartGame from './RestartGame';
@@ -44,8 +43,8 @@ const GameState = ({ gameId, playerName, setGameState, gameState }: Props) => {
       direction='column'
       spacing={1}
       sx={{
-        // alignSelf: 'center',
-        width: '100%',
+        alignSelf: 'center',
+        width: '50%',
       }}
     >
       <GameInfo

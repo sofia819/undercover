@@ -1,29 +1,70 @@
 import { submitVote } from '../Request';
+import { useState } from 'react';
+import Stack from '@mui/material/Stack';
+import Box from '@mui/material/Box';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
+import Button from '@mui/material/Button';
 
 interface Props {
   gameId: string;
   playerName: string;
-  players: string[];
+  playerOrder: string[];
 }
 
-const VoteUI = ({ gameId, playerName, players }: Props) => {
-  const handleClick = (player: string) => {
-    submitVote(gameId, playerName, player);
+const VoteUI = ({ gameId, playerName, playerOrder }: Props) => {
+  const [vote, setVote] = useState('');
+
+  const handleChange = (event: SelectChangeEvent) => {
+    setVote(event.target.value as string);
+  };
+
+  const handleClick = () => {
+    submitVote(gameId, playerName, vote);
   };
 
   return (
-    <>
-      <div>
-        {players.map(
-          (player) =>
-            player !== playerName && (
-              <button key={player} onClick={() => handleClick(player)}>
-                {player}
-              </button>
-            )
-        )}
-      </div>
-    </>
+    <Box
+      sx={{
+        display: 'flex',
+        justifyContent: 'center',
+      }}
+    >
+      <Stack
+        direction='row'
+        spacing={1}
+        sx={{
+          width: '30%',
+        }}
+      >
+        <FormControl fullWidth>
+          <InputLabel id='demo-simple-select-label'>Player Vote</InputLabel>
+          <Select
+            labelId='demo-simple-select-label'
+            id='demo-simple-select'
+            value={vote}
+            label='Player'
+            onChange={handleChange}
+          >
+            {playerOrder.map(
+              (player) =>
+                player !== playerName && (
+                  <MenuItem value={player}>{player}</MenuItem>
+                )
+            )}
+          </Select>
+        </FormControl>
+        <Button
+          onClick={handleClick}
+          disabled={vote.length === 0}
+          variant='contained'
+        >
+          Submit
+        </Button>
+      </Stack>
+    </Box>
   );
 };
 

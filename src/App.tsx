@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import JoinGame from './components/JoinGame';
 import GameState from './components/GameState';
-import PlayerCard from './components/PlayerCard';
 import Display from './components/Display';
 import { Status } from './types';
 import { connectWebsocket } from './Request';
 import { ReadyState } from 'react-use-websocket';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
+import ControlUI from './components/ControlUI';
 
 const App = () => {
   const { readyState } = connectWebsocket();
@@ -29,39 +29,46 @@ const App = () => {
           height: '100vh', // Full viewport height
         }}
       >
-        {gameId === '' && playerName === '' && (
+        {gameId === '' && playerName === '' ? (
           <JoinGame
             setPlayerName={setPlayerName}
             setGameId={setGameId}
             playerName={playerName}
             gameId={gameId}
           />
+        ) : (
+          <Stack
+            direction='column'
+            spacing={1}
+            sx={{
+              // alignSelf: 'center',
+              width: '100%',
+            }}
+          >
+            <GameState
+              gameId={gameId}
+              playerName={playerName}
+              setGameState={setGameState}
+              gameState={gameState}
+            />
+            <Display gameState={gameState} />
+            {gameState &&
+              (gameState.gameStatus === Status.CLUE ||
+                gameState.gameStatus === Status.VOTE) && (
+                <ControlUI
+                  gameId={gameId}
+                  player={gameState.players[playerName]}
+                  setWord={setWord}
+                  word={word}
+                  currentRoundIndex={gameState.currentRoundIndex}
+                  playerOrder={gameState.playerOrder}
+                  clues={gameState.clues}
+                  votes={gameState.votes}
+                  gameStatus={gameState.gameStatus}
+                />
+              )}
+          </Stack>
         )}
-        <GameState
-          gameId={gameId}
-          playerName={playerName}
-          setGameState={setGameState}
-          gameState={gameState}
-        />
-        {gameState &&
-          (gameState.gameStatus === Status.CLUE ||
-            gameState.gameStatus === Status.VOTE) && (
-            <>
-              <PlayerCard
-                gameId={gameId}
-                player={gameState.players[playerName]}
-                setWord={setWord}
-                word={word}
-                currentRoundIndex={gameState.currentRoundIndex}
-                playerOrder={gameState.playerOrder}
-                clues={gameState.clues}
-                votes={gameState.votes}
-                gameStatus={gameState.gameStatus}
-                players={gameState.playerOrder}
-              />
-              <Display gameState={gameState} />
-            </>
-          )}
       </Box>
     </>
   );
