@@ -56,15 +56,10 @@ const App = () => {
               (gameState.gameStatus === Status.CLUE ||
                 gameState.gameStatus === Status.VOTE) && (
                 <ControlUI
-                  gameId={gameId}
                   player={gameState.players[playerName]}
                   setWord={setWord}
                   word={word}
-                  currentRoundIndex={gameState.currentRoundIndex}
-                  playerOrder={gameState.playerOrder}
-                  clues={gameState.clues}
-                  votes={gameState.votes}
-                  gameStatus={gameState.gameStatus}
+                  gameState={gameState}
                 />
               )}
           </Stack>

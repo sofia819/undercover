@@ -4,6 +4,7 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
+import { Typography } from '@mui/material';
 
 interface Props {
   gameId: string;
@@ -27,27 +28,31 @@ const ClueUI = ({ gameId, playerName, isPlayerTurn }: Props) => {
         justifyContent: 'center',
       }}
     >
-      <Stack
-        direction='row'
-        spacing={1}
-        sx={{
-          width: '30%',
-        }}
-      >
-        <TextField
-          value={clueInput}
-          onChange={(e) => handleInput(e.target.value)}
-          placeholder='Clue'
-          disabled={!isPlayerTurn}
-        />
-        <Button
-          onClick={handleClick}
-          disabled={!isPlayerTurn || clueInput.length === 0}
-          variant='contained'
+      {isPlayerTurn ? (
+        <Stack
+          direction='row'
+          spacing={1}
+          sx={{
+            width: '30%',
+          }}
         >
-          Submit
-        </Button>
-      </Stack>
+          <TextField
+            value={clueInput}
+            onChange={(e) => handleInput(e.target.value)}
+            placeholder='Clue'
+            disabled={!isPlayerTurn}
+          />
+          <Button
+            onClick={handleClick}
+            disabled={clueInput.length === 0}
+            variant='contained'
+          >
+            Submit
+          </Button>
+        </Stack>
+      ) : (
+        <Typography>Please wait for your turn...</Typography>
+      )}
     </Box>
   );
 };

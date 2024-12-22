@@ -3,19 +3,29 @@ import VoteUI from './VoteUI';
 import ClueUI from './ClueUI';
 import Stack from '@mui/material/Stack';
 import { getWord } from '../Request';
-import { Status } from '../types';
+import { Status, Player, GameState } from '../types';
+
+interface Props {
+  gameState: GameState;
+  setWord: Function;
+  word: string;
+  player: Player;
+}
 
 const ControlUI = ({
-  gameId,
-  player: { playerName, isActive },
   setWord,
   word,
-  currentRoundIndex,
-  clues,
-  votes,
-  gameStatus,
-  playerOrder,
-}: any) => {
+  player: { playerName, isActive },
+  gameState: {
+    gameId,
+    currentRoundIndex,
+    clues,
+    votes,
+    gameStatus,
+    playerOrder,
+    players,
+  },
+}: Props) => {
   useEffect(() => {
     if (playerName === '') {
       return;
@@ -26,18 +36,22 @@ const ControlUI = ({
       .catch((err) => console.error(err));
   }, [playerName]);
 
-  const order: number = playerOrder.indexOf(playerName);
+  const order: number = playerOrder
+    .filter((playerName) => players[playerName].isActive)
+    .indexOf(playerName);
   const current: number = Object.keys(clues[currentRoundIndex] || {}).length;
 
   return (
     <>
       {isActive ? (
         <Stack direction='column' spacing={1}>
-          <ClueUI
-            gameId={gameId}
-            playerName={playerName}
-            isPlayerTurn={gameStatus === Status.CLUE && order === current}
-          />
+          {gameStatus === Status.CLUE && order >= current && (
+            <ClueUI
+              gameId={gameId}
+              playerName={playerName}
+              isPlayerTurn={order === current}
+            />
+          )}
           {gameStatus === Status.VOTE &&
             !votes[currentRoundIndex]?.[playerName] && (
               <VoteUI
