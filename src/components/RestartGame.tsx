@@ -1,4 +1,5 @@
 import { restartGame } from '../Request';
+import Button from '@mui/material/Button';
 
 interface Props {
   gameId: string;
@@ -13,11 +14,14 @@ const RestartGame = ({ gameId, hasEnoughPlayers }: Props) => {
   return (
     <>
       {gameId !== '' && (
-        <div>
-          <button onClick={handleRestart} disabled={!hasEnoughPlayers}>
-            Restart Game
-          </button>
-        </div>
+        <Button
+          onClick={handleRestart}
+          disabled={!hasEnoughPlayers}
+          variant='contained'
+          sx={{ width: '50%', alignSelf: 'center' }}
+        >
+          Restart Game
+        </Button>
       )}
     </>
   );

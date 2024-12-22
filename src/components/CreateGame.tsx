@@ -1,4 +1,5 @@
 import { createGame } from '../Request';
+import Button from '@mui/material/Button';
 
 interface Props {
   setGameId: Function;
@@ -14,9 +15,9 @@ const CreateGame = ({ setGameId, gameId, playerNameInput }: Props) => {
   return (
     <>
       {gameId === '' && (
-        <button onClick={handleCreateGame} disabled={playerNameInput === ''}>
+        <Button onClick={handleCreateGame} disabled={playerNameInput === ''}>
           Create Game
-        </button>
+        </Button>
       )}
     </>
   );

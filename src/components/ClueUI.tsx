@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { submitClue } from '../Request';
+import Button from '@mui/material/Button';
 
 interface Props {
   gameId: string;
@@ -23,9 +24,9 @@ const ClueUI = ({ gameId, playerName }: Props) => {
           onChange={(e) => handleInput(e.target.value)}
           placeholder='Clue'
         ></input>
-        <button onClick={handleClick} disabled={clueInput.length === 0}>
+        <Button onClick={handleClick} disabled={clueInput.length === 0}>
           Submit
-        </button>
+        </Button>
       </div>
     </>
   );

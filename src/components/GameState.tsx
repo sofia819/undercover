@@ -2,6 +2,11 @@ import { useEffect } from 'react';
 import { GameState, MessageType, Status } from '../types';
 import { connectWebsocket } from '../Request';
 import { ReadyState } from 'react-use-websocket';
+import StartGame from './StartGame';
+import Container from '@mui/material/Container';
+import GameInfo from './GameInfo';
+import Stack from '@mui/material/Stack';
+import RestartGame from './RestartGame';
 
 interface Props {
   gameId: string;
@@ -33,23 +38,39 @@ const GameState = ({ gameId, playerName, setGameState, gameState }: Props) => {
     return <></>;
   }
 
-  const { gameStatus, currentRoundIndex, maxRoundIndex } = gameState;
-
   return (
-    <>
-      <h3>GameId: {gameId}</h3>
-      <h3>status: {gameStatus}</h3>
-      <h3>
-        {`Round ${
-          currentRoundIndex +
-          (gameStatus !== Status.CIVILIAN_WON && gameStatus !== Status.SPY_WON
-            ? 1
-            : 0)
-        }
-        / ${maxRoundIndex + 1}`}
-      </h3>
-      <h4>You are player: {playerName}</h4>
-    </>
+    // <Container sx={{ width: '50%', alignSelf: 'center' }}>
+    <Stack
+      direction='column'
+      spacing={1}
+      sx={{
+        // alignSelf: 'center',
+        width: '100%',
+      }}
+    >
+      <GameInfo
+        gameId={gameId}
+        playerName={playerName}
+        setGameState={setGameState}
+        gameState={gameState}
+      />
+      {gameState && gameState.gameStatus === Status.WAITING && (
+        <StartGame
+          gameId={gameId}
+          hasEnoughPlayers={Object.keys(gameState.players || {}).length >= 3}
+        />
+      )}
+      {(gameState.gameStatus === Status.CIVILIAN_WON ||
+        gameState.gameStatus === Status.SPY_WON) && (
+        <>
+          <RestartGame
+            gameId={gameId}
+            hasEnoughPlayers={Object.keys(gameState.players).length >= 3}
+          />
+        </>
+      )}
+    </Stack>
+    // </Container>
   );
 };
 
