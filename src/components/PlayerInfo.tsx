@@ -1,4 +1,4 @@
-import { GameState, Status } from '../types';
+import { GameState } from '../types';
 import InfoCard from './InfoCard';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid2';
@@ -21,6 +21,7 @@ const PlayerInfo = ({ gameState }: Props) => {
           {playerOrder.map((player) => {
             return (
               <InfoCard
+                key={player}
                 player={players[player]}
                 clues={clues.map((clue) => clue[player]) || []}
               />

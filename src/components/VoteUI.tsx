@@ -56,7 +56,9 @@ const VoteUI = ({ gameId, playerName, playerOrder, voteSubmitted }: Props) => {
               {playerOrder.map(
                 (player) =>
                   player !== playerName && (
-                    <MenuItem value={player}>{player}</MenuItem>
+                    <MenuItem key={player} value={player}>
+                      {player}
+                    </MenuItem>
                   )
               )}
             </Select>
