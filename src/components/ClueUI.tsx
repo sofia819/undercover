@@ -10,9 +10,10 @@ interface Props {
   gameId: string;
   playerName: string;
   isPlayerTurn: boolean;
+  clueSubmitted: boolean;
 }
 
-const ClueUI = ({ gameId, playerName, isPlayerTurn }: Props) => {
+const ClueUI = ({ gameId, playerName, isPlayerTurn, clueSubmitted }: Props) => {
   const [clueInput, setClueInput] = useState('');
   const handleInput = (inputText: string) => setClueInput(inputText);
 
@@ -28,7 +29,7 @@ const ClueUI = ({ gameId, playerName, isPlayerTurn }: Props) => {
         justifyContent: 'center',
       }}
     >
-      {isPlayerTurn ? (
+      {isPlayerTurn && (
         <Stack
           direction='row'
           spacing={1}
@@ -50,8 +51,12 @@ const ClueUI = ({ gameId, playerName, isPlayerTurn }: Props) => {
             Submit
           </Button>
         </Stack>
-      ) : (
+      )}
+      {!isPlayerTurn && !clueSubmitted && (
         <Typography>Please wait for your turn...</Typography>
+      )}
+      {!isPlayerTurn && clueSubmitted && (
+        <Typography>You have submitted your clue!</Typography>
       )}
     </Box>
   );

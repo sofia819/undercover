@@ -7,7 +7,7 @@ interface Props {
   gameState: GameState | undefined;
 }
 
-const Display = ({ gameState }: Props) => {
+const PlayerInfo = ({ gameState }: Props) => {
   if (!gameState) {
     return <></>;
   }
@@ -33,4 +33,4 @@ const Display = ({ gameState }: Props) => {
   );
 };
 
-export default Display;
+export default PlayerInfo;

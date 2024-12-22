@@ -4,6 +4,8 @@ import ClueUI from './ClueUI';
 import Stack from '@mui/material/Stack';
 import { getWord } from '../Request';
 import { Status, Player, GameState } from '../types';
+import { Typography } from '@mui/material';
+import Box from '@mui/material/Box';
 
 interface Props {
   gameState: GameState;
@@ -27,43 +29,62 @@ const ControlUI = ({
   },
 }: Props) => {
   useEffect(() => {
-    if (playerName === '') {
+    if (gameStatus !== Status.CLUE || currentRoundIndex > 0) {
       return;
     }
 
     getWord(gameId, playerName)
       .then(({ data }) => setWord(data))
       .catch((err) => console.error(err));
-  }, [playerName]);
+  }, [gameStatus]);
 
-  const order: number = playerOrder
-    .filter((playerName) => players[playerName].isActive)
-    .indexOf(playerName);
+  const activePlayers = playerOrder.filter(
+    (playerName) => players[playerName].isActive
+  );
+  const order: number = activePlayers.indexOf(playerName);
   const current: number = Object.keys(clues[currentRoundIndex] || {}).length;
 
   return (
     <>
-      {isActive ? (
-        <Stack direction='column' spacing={1}>
-          {gameStatus === Status.CLUE && order >= current && (
-            <ClueUI
-              gameId={gameId}
-              playerName={playerName}
-              isPlayerTurn={order === current}
-            />
-          )}
-          {gameStatus === Status.VOTE &&
-            !votes[currentRoundIndex]?.[playerName] && (
+      <Stack direction='column' spacing={1}>
+        {isActive ? (
+          <>
+            <Box
+              sx={{
+                display: 'flex',
+                justifyContent: 'center',
+              }}
+            >
+              <Typography>Word: {word}</Typography>
+            </Box>
+            {gameStatus === Status.CLUE && (
+              <ClueUI
+                gameId={gameId}
+                playerName={playerName}
+                isPlayerTurn={order === current}
+                clueSubmitted={order < current}
+              />
+            )}
+            {gameStatus === Status.VOTE && (
               <VoteUI
                 gameId={gameId}
                 playerName={playerName}
-                playerOrder={playerOrder}
+                playerOrder={activePlayers}
+                voteSubmitted={playerName in votes[currentRoundIndex]}
               />
             )}
-        </Stack>
-      ) : (
-        'ELIMINATED'
-      )}
+          </>
+        ) : (
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'center',
+            }}
+          >
+            <Typography>ELIMINATED</Typography>
+          </Box>
+        )}
+      </Stack>
     </>
   );
 };

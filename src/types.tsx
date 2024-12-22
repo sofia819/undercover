@@ -27,6 +27,7 @@ export enum Status {
 export enum Role {
   CIVILIAN = 'CIVILIAN',
   SPY = 'SPY',
+  HIDDEN = 'HIDDEN',
 }
 
 export enum MessageType {
@@ -48,12 +49,4 @@ export enum ErrorType {
 
 export interface ErrorMessage {
   type: ErrorType;
-}
-
-export enum GameStatus {
-  NONE,
-  WAITING,
-  CLUE,
-  VOTE,
-  COMPLETE,
 }
