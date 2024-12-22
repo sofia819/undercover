@@ -1,5 +1,8 @@
 import { useEffect, useState } from 'react';
 import { createGame, joinGame } from '../Request';
+import Stack from '@mui/material/Stack';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
 
 interface Props {
   setPlayerName: Function;
@@ -49,23 +52,36 @@ const JoinGame = ({ setPlayerName, setGameId, playerName, gameId }: Props) => {
 
   return (
     <>
-      {(gameId === '' || playerName === '') && (
-        <div>
-          <input
-            onChange={(e) => setGameIdInput(e.target.value)}
-            value={gameIdInput}
-            placeholder='Game ID'
-          />
-          <input
-            onChange={(e) => setPlayerNameInput(e.target.value)}
-            value={playerNameInput}
-            placeholder='Player Name'
-          />
-          <button onClick={handleClick} disabled={playerNameInput === ''}>
-            Join or create game
-          </button>
-        </div>
-      )}
+      <Stack
+        direction='column'
+        spacing={1}
+        sx={{
+          alignSelf: 'center',
+          width: '30%',
+        }}
+      >
+        {(gameId === '' || playerName === '') && (
+          <>
+            <TextField
+              onChange={(e) => setGameIdInput(e.target.value)}
+              value={gameIdInput}
+              placeholder='Game ID'
+            />
+            <TextField
+              onChange={(e) => setPlayerNameInput(e.target.value)}
+              value={playerNameInput}
+              placeholder='Player Name'
+            />
+            <Button
+              onClick={handleClick}
+              disabled={playerNameInput === ''}
+              variant='contained'
+            >
+              Join or create game
+            </Button>
+          </>
+        )}
+      </Stack>
     </>
   );
 };

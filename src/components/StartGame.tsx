@@ -1,4 +1,5 @@
 import { startGame } from '../Request';
+import Button from '@mui/material/Button';
 
 interface Props {
   gameId: string;
@@ -13,11 +14,14 @@ const StartGame = ({ gameId, hasEnoughPlayers }: Props) => {
   return (
     <>
       {gameId !== '' && (
-        <div>
-          <button onClick={handleStart} disabled={!hasEnoughPlayers}>
-            Start Game
-          </button>
-        </div>
+        <Button
+          onClick={handleStart}
+          disabled={!hasEnoughPlayers}
+          variant='contained'
+          sx={{ width: '50%', alignSelf: 'center' }}
+        >
+          Start Game
+        </Button>
       )}
     </>
   );

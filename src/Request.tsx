@@ -1,5 +1,6 @@
 import axios from 'axios';
 import useWebSocket from 'react-use-websocket';
+import { GameState } from './types';
 
 export const createGame = (playerName: string) => {
   return axios.post(`http://[::1]:5000/create`, { playerName });
@@ -21,7 +22,7 @@ export const getWord = (gameId: string, playerName: string) => {
 };
 
 export const connectWebsocket = () => {
-  return useWebSocket(`http://[::1]:5000/`, { share: true });
+  return useWebSocket<GameState>(`http://[::1]:5000/`, { share: true });
 };
 
 export const submitClue = (
