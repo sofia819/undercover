@@ -16,8 +16,7 @@ const PlayerInfo = ({ gameState }: Props) => {
 
   return (
     <Container>
-      {(gameState.gameStatus === Status.CLUE ||
-        gameState.gameStatus === Status.VOTE) && (
+      {
         <Grid container spacing={1} sx={{ justifyContent: 'center' }}>
           {playerOrder.map((player) => {
             return (
@@ -28,7 +27,7 @@ const PlayerInfo = ({ gameState }: Props) => {
             );
           })}
         </Grid>
-      )}
+      }
     </Container>
   );
 };
