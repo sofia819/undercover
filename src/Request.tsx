@@ -24,7 +24,7 @@ export const getWord = (gameId: string, playerName: string) => {
 };
 
 export const connectWebsocket = () => {
-  return useWebSocket<GameState>(`${apiUrl}/`, { share: true });
+  return useWebSocket<GameState>(`${apiUrl}/connect`, { share: true });
 };
 
 export const submitClue = (
