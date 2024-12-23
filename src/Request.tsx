@@ -2,27 +2,29 @@ import axios from 'axios';
 import useWebSocket from 'react-use-websocket';
 import { GameState } from './types';
 
+const apiUrl = import.meta.env.VITE_API_URL;
+
 export const createGame = (playerName: string) => {
-  return axios.post(`http://[::1]:5000/create`, { playerName });
+  return axios.post(`${apiUrl}/create`, { playerName });
 };
 
 export const joinGame = (gameId: string, playerName: string) => {
-  return axios.post(`http://[::1]:5000/join`, { gameId, playerName });
+  return axios.post(`${apiUrl}/join`, { gameId, playerName });
 };
 
 export const startGame = (gameId: string) => {
-  return axios.post(`http://[::1]:5000/start`, { gameId });
+  return axios.post(`${apiUrl}/start`, { gameId });
 };
 export const restartGame = (gameId: string) => {
-  return axios.post(`http://[::1]:5000/restart`, { gameId });
+  return axios.post(`${apiUrl}/restart`, { gameId });
 };
 
 export const getWord = (gameId: string, playerName: string) => {
-  return axios.get(`http://[::1]:5000/${gameId}/${playerName}/word`);
+  return axios.get(`${apiUrl}/${gameId}/${playerName}/word`);
 };
 
 export const connectWebsocket = () => {
-  return useWebSocket<GameState>(`http://[::1]:5000/`, { share: true });
+  return useWebSocket<GameState>(`${apiUrl}/`, { share: true });
 };
 
 export const submitClue = (
@@ -31,7 +33,7 @@ export const submitClue = (
   clue: string
 ) => {
   axios
-    .post(`http://[::1]:5000/clue`, {
+    .post(`${apiUrl}/clue`, {
       gameId,
       playerName,
       clue,
@@ -45,7 +47,7 @@ export const submitVote = (
   vote: string
 ) => {
   axios
-    .post(`http://[::1]:5000/vote`, {
+    .post(`${apiUrl}/vote`, {
       gameId,
       playerName,
       vote,
